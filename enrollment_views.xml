@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_academy_enrollment" model="ir.actions.act_window">
+        <field name="name">Enrollments</field>
+        <field name="res_model">academy.enrollment</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="view_search_academy_enrollment" model="ir.ui.view">
+        <field name="name">academy.enrollment.search</field>
+        <field name="model">academy.enrollment</field>
+        <field name="arch" type="xml">
+            <search string="Enrollments">
+                <field name="student_id"/>
+                <field name="course_id"/>
+                <field name="state"/>
+                
+                <filter string="My Enrollments" name="my_enrollments" 
+                        domain="[('student_id.user_id', '=', uid)]"/>
+                <filter string="Confirmed" name="confirmed_enrollments" 
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Completed" name="completed_enrollments" 
+                        domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Course" name="group_course" context="{'group_by':'course_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_form_academy_enrollment" model="ir.ui.view">
+        <field name="name">academy.enrollment.form</field>
+        <field name="model">academy.enrollment</field>
+        <field name="arch" type="xml">
+            <form string="Enrollment">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" 
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_complete" type="object" string="Mark as Complete" 
+                            attrs="{'invisible': [('state', 'not in', ['confirmed', 'cancelled'])]}"/>
+                    <button name="action_cancel" type="object" string="Cancel Enrollment" 
+                            attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                    <button name="action_draft" type="object" string="Set to Draft" 
+                            attrs="{'invisible': [('state', 'not in', ['completed', 'cancelled'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,completed,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="student_id"/>
+                            <field name="course_id"/>
+                        </group>
+                        <group>
+                            <field name="enrollment_date"/>
+                            <field name="grade"/>
+                            <field name="attendance_percentage"/>
+                        </group>
+                    </group>
+                    <group string="Results" attrs="{'invisible': [('state', '!=', 'completed')]}">
+                        <field name="passed" readonly="1" 
+                               attrs="{'decoration-success': [('passed', '=', True)], 'decoration-danger': [('passed', '=', False)]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_academy_enrollment" model="ir.ui.view">
+        <field name="name">academy.enrollment.tree</field>
+        <field name="model">academy.enrollment</field>
+        <field name="arch" type="xml">
+            <tree string="Enrollments" decoration-success="passed == True">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="course_id"/>
+                <field name="enrollment_date"/>
+                <field name="state"/>
+                <field name="grade"/>
+                <field name="passed" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

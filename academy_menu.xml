@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+        <menuitem id="menu_academy_root" name="Academy" sequence="10"/>
+
+        <menuitem id="menu_academy_courses_root" name="Courses"
+                  parent="menu_academy_root" sequence="10"/>
+
+        <menuitem id="menu_academy_course_list" name="Courses"
+                  parent="menu_academy_courses_root"
+                  action="action_academy_course" sequence="10"/>
+
+        <menuitem id="menu_academy_category_list" name="Categories"
+                  parent="menu_academy_courses_root"
+                  action="action_academy_course_category" sequence="20"/>
+
+        <menuitem id="menu_academy_enrollments_root" name="Enrollments"
+                  parent="menu_academy_root" sequence="20"/>
+
+        <menuitem id="menu_academy_enrollment_all" name="All Enrollments"
+                  parent="menu_academy_enrollments_root"
+                  action="action_academy_enrollment" sequence="10"/>
+                  
+        <menuitem id="menu_academy_enrollment_my" name="My Enrollments"
+                  parent="menu_academy_enrollments_root"
+                  action="action_academy_enrollment" 
+                  context="{'search_default_my_enrollments': 1}"
+                  sequence="20"/>
+                  
+        <menuitem id="menu_academy_config_root" name="Configuration"
+                  parent="menu_academy_root" sequence="100"
+                  groups="academy_lab2.academy_group_manager"/> 
+    </data>
+</odoo>

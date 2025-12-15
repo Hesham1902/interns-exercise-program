@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_academy" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.academy</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="%(action_academy_course)s" icon="fa-book"
+                        attrs="{'invisible': [('is_instructor', '=', False)]}">
+                    <field name="total_courses_teaching" widget="statinfo" string="Courses Taught"/>
+                </button>
+                
+                <button class="oe_stat_button" type="object" name="%(action_academy_enrollment)s" icon="fa-graduation-cap"
+                        context="{'default_student_id': active_id, 'search_default_student_id': active_id}"
+                        attrs="{'invisible': [('is_student', '=', False)]}">
+                    <field name="total_courses_enrolled" widget="statinfo" string="Courses Enrolled"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_instructor"/>
+                <field name="is_student"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page name="academy_page" string="Academy" 
+                      attrs="{'invisible': ['&amp;', ('is_instructor', '=', False), ('is_student', '=', False)]}">
+                    
+                    <group string="Courses Taught" attrs="{'invisible': [('is_instructor', '=', False)]}">
+                        <field name="course_ids" nolabel="1"/>
+                    </group>
+                    
+                    <group string="Enrollments" attrs="{'invisible': [('is_student', '=', False)]}">
+                        <field name="enrollment_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

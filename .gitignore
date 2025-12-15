@@ -1,0 +1,22 @@
+# Odoo specific ignores
+*.pyc
+*.pyo
+*~
+.project
+.external_dependencies
+
+# Python VENV or local environment
+/venv/
+
+# Docker/Container specific
+.env
+
+# Logs
+*.log
+
+# Data folders/Volumes (Crucial for Docker)
+/odoo-data-dir/
+/odoo-db-data/
+
+# Specific Docker volume names you might have locally
+odoo-docker-project_odoo-db-data
